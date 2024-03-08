@@ -16,7 +16,7 @@ const AuthToken = {
             })
         }
         else{
-            return next(new ApiError(401, "You're not authentication!"));
+            return next(new ApiError(401, "You're not authenticated!"));
         }
     },
 
@@ -29,7 +29,7 @@ const AuthToken = {
                 return next(new ApiError(403, "You're not allowed!"));
             }
         })
-    }
+    },
     
 }
 

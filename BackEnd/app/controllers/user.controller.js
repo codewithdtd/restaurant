@@ -4,6 +4,7 @@ const MongoDB = require("../utils/mongodb.util");
 const ApiError = require("../api-error");
 const jwt = require('jsonwebtoken');
 
+
 const generateAccessToken = require("../middleware/generateAccessToken")
 const generateRefreshToken = require("../middleware/generateRefreshToken")
 
@@ -153,28 +154,36 @@ exports.login = async (req, res, next) => {
     }
 }
 
-// exports.refreshToken = async (res, req, next) => {
-//     const refreshToken = req.cookies.refreshToken;
+exports.logout = async  (req, res, next) => {
+    res.clearCookie("refreshToken");
+    return res.json({message: "Logged out!"})
+}
 
-//     if(!refreshToken) {
-//         return next( new ApiError(403, "You're not authenticated"));
-//     }
-//     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user)=> {
-//         if(err) {
-//             console.log(err);
-//         }
-//         // tạo access token mới
-//         const newAccessToken = generateAccessToken(user);
-//         const newRefreshToken = generateRefreshToken(user);
-//         res.cookie("newRefreshToken", newRefreshToken, {
-//             httpOnly: true,
-//             secure: false,
-//             path: "/",
-//             sameSite: "strict",
-//         })
-//     })
-//     return next();
-// }
+
+exports.refreshToken = async (req, res, next) => {
+    const refreshToken = req.cookies?.refreshToken;
+
+    if(!refreshToken) {
+        return next( new ApiError(403, "You're not authenticated"));
+    }
+
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user)=> {
+        console.log(user)
+        if(err) {
+            console.log(err);
+        }
+        // tạo access token mới
+        const newAccessToken = generateAccessToken(user);
+        const newRefreshToken = generateRefreshToken(user);
+        res.cookie("refreshToken", newRefreshToken, {
+            httpOnly: true,
+            secure: false,
+            path: "/",
+            sameSite: "strict",
+        })
+        return res.json(newAccessToken);
+    })
+}
 
 // CART
 exports.addCart = async (req,res,next) => {
@@ -183,11 +192,11 @@ exports.addCart = async (req,res,next) => {
         const cartService = new CartService(MongoDB.client);
 
         const data = req.body;
-        const id = req.user._id;
-            
+        const id = req.user.user._id;
+        console.log(req.user)    
         const cartItems = [];
         const cartItem = {
-            product: data,
+            product: data.product,
             quanlity: data.quanlity ?? 1,
             price: data.price,
         };
@@ -204,7 +213,7 @@ exports.addCart = async (req,res,next) => {
     }
 }
 
-exports.findAllCart = async (req, res, next) => {
+exports.findAllCartUser = async (req, res, next) => {
     try {
         const cartService = new CartService(MongoDB.client);
         const carts = await cartService.findAllCartUser(req.user._id)
@@ -219,19 +228,44 @@ exports.findAllCart = async (req, res, next) => {
 exports.updateCart = async (req, res, next) => {
     try {
         const cart = req.body;
-        const user = req.user._id;
+        const user = req.user.user._id;
 
         const cartService = new CartService(MongoDB.client);
         const userService = new UserService(MongoDB.client);
    
-        const updateCart = await cartService.updateQuanlity(cart)
+        const updateCart = await cartService.update(cart._id.$oid,cart)
 
         const carts = await cartService.findAllCartUser(user)
-        
+        const newCarts = carts.map(({ user, ...rest}) => rest);
+
         const clearCart = await userService.deleteAllCart(user)
-        const updateCartUser = await userService.updateCart(user,carts) 
+        const updateCartUser = await userService.updateCart(user,newCarts) 
 
         return res.json(updateCartUser)
+    } catch (error) {
+        return next( new ApiError(
+            500, "Đã có lỗi xảy ra!"
+        ))
+    }
+}
+
+exports.deleteCart = async (req, res, next) => {
+    try {
+        const cart = req.body.id;
+        const user = req.user.user._id;
+
+        const cartService = new CartService(MongoDB.client);
+        const userService = new UserService(MongoDB.client);
+
+        const deleteCart = await cartService.delete(cart);
+        const deleteCartUser = await userService.deleteCart(user, cart)
+        // const carts = await cartService.findAllCartUser(user)
+        // const newCarts = carts.map(({ user, ...rest}) => rest);
+
+        // const clearCart = await userService.deleteAllCart(user)
+        // const updateCartUser = await userService.updateCart(user,newCarts) 
+
+        return res.json(deleteCartUser);
     } catch (error) {
         return next( new ApiError(
             500, "Đã có lỗi xảy ra!"
