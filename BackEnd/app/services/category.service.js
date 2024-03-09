@@ -55,7 +55,7 @@ class CategoryService {
         const result = await this.Category.findOneAndUpdate(
             filter,
             { $set: update },
-            { returnDocument: "after" }
+            { returnDocument: "before" }
         );
         return result;
     }
