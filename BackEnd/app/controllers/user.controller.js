@@ -6,7 +6,8 @@ const jwt = require('jsonwebtoken');
 
 
 const generateAccessToken = require("../middleware/generateAccessToken")
-const generateRefreshToken = require("../middleware/generateRefreshToken")
+const generateRefreshToken = require("../middleware/generateRefreshToken");
+const OrderService = require("../services/order.service");
 
 require('dotenv').config()
 
@@ -267,6 +268,64 @@ exports.deleteCart = async (req, res, next) => {
 
         return res.json(deleteCartUser);
     } catch (error) {
+        return next( new ApiError(
+            500, "Đã có lỗi xảy ra!"
+        ))
+    }
+}
+
+exports.addOrder = async (req, res, next) => {
+    try {
+        const order = req.body;
+        const user = req.user.user._id;
+
+        order.userId = user;
+        // const userService =  new UserService(MongoDB.client);
+        const cartService = new CartService(MongoDB.client);
+        const orderService = new OrderService(MongoDB.client);
+
+        const carts = await cartService.findAllCartUser(user);
+        const newCarts = carts.map(({ user, _id,...rest}) => rest);
+        order.detail = newCarts;
+
+        let totalPrice = 0;
+        order.detail.forEach(item => { totalPrice+=item.price });
+        order.totalPrice = totalPrice;
+
+        // Create order
+        const addOrder = await orderService.create(order);
+        return res.json(addOrder);
+    } catch (error) {
+        return next( new ApiError(
+            500, "Đã có lỗi xảy ra!"
+        ))
+    }
+}
+
+exports.updateOrder = async (req, res, next) => {
+    try {
+        const order = req.body;
+        const orderService = new OrderService(MongoDB.client);
+
+        const updateOrder = await orderService.update(order._id,order)
+        return res.json(updateOrder)
+    } catch (error) {
+        console.log(error)
+        return next( new ApiError(
+            500, "Đã có lỗi xảy ra!"
+        ))
+    }
+}
+
+exports.findAllOrderUser = async (req, res, next) => {
+    try {
+        const userId = req.user.user._id;
+        const orderService = new OrderService(MongoDB.client);
+
+        const AllOrder = await orderService.findAllOrderUser(userId)
+        return res.json(AllOrder)
+    } catch (error) {
+        console.log(error)
         return next( new ApiError(
             500, "Đã có lỗi xảy ra!"
         ))

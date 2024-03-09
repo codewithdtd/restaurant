@@ -61,9 +61,11 @@ class CategoryService {
     }
 
     async delete(id) {
+
         const result = await this.Category.findOneAndDelete({
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
         });
+       
         return result;
     }
 

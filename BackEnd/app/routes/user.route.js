@@ -28,11 +28,10 @@ router.route("/cart")
     .delete(AuthToken.verifyToken, user.deleteCart)
 
 // Order
-// router.route("/order")
-//     .post(AuthToken.verifyToken, user.addOrder)
-//     .put(AuthToken.verifyToken, user.updateOrder)
-//     .get(AuthToken.verifyToken, user.findAllOrderUser)
-
+router.route("/order")
+    .post(AuthToken.verifyToken, user.addOrder)
+    .put(AuthToken.verifyToken, user.updateOrder)
+    .get(AuthToken.verifyToken, user.findAllOrderUser)
 
 router.route("/:id")
     .get(user.findOne)
