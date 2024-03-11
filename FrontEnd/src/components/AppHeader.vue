@@ -11,13 +11,12 @@
                     <i class="fa-solid fa-bag-shopping header__icon__cart"></i>
                 </router-link>
             </div>
-            <div class="header__function__item header__function__bar">
+            <div class="header__function__item header__function__bar" @click="handleNav">
                 <i class="fa-solid fa-bars "></i>
             </div>
         </div>
 
-
-        <div class="header__menu col-md-10 col-sm-5 row">
+        <div class="header__menu col-md-10 col-sm-5 row" :class="{ 'header__menu--active': showNav}">
             <div class="header__navbar col-md-6">
                 <router-link to="/" class="header__navbar__link">Trang chủ</router-link>
                 <router-link to="/menu" class="header__navbar__link">Menu</router-link>
@@ -54,18 +53,20 @@
 
 <script>
 import Search from './Search.vue';
-// import Navbar from './Navbar.vue';
+// import MobileHeader from './MobileHeader.vue';
 // import NavbarHide from './NavbarHide.vue';
 
 
 export default {
-    components: { Search },
+    components: { Search,  },
     methods: {
-       
+        handleNav() {
+            this.showNav = !this.showNav;
+        },
     },
     data() {
         return {
-         
+            showNav: false,
         }
     },
 
@@ -171,7 +172,7 @@ export default {
     .header {
         position: relative;
     }
-    .header__menu {
+    .header .header__menu {
         position: absolute;
         top: 100%;
         right: 0;
@@ -179,12 +180,11 @@ export default {
         flex-direction: column;
         align-items: end;
         padding: 20px;
-        /* height: 80vh; */
+        display: none;
     }
     .header__navbar, .header__function {
         flex-direction: column;
         align-items: start;
-        /* padding: 10px 0; */
     }
     .header__navbar {
         justify-content: center;
@@ -204,7 +204,6 @@ export default {
     }
     
     .header .header__button {
-        /* display: inline-block; */
         margin-right: 20px;
         color: #fff;
         font-size: 1.4rem;
@@ -233,7 +232,6 @@ export default {
 
     .header__navbar a {
         padding-bottom: 20px;
-        /* background-color: #686868; */
         width: 100%;
     }
 
@@ -241,6 +239,9 @@ export default {
         background-color: #686868;
     }
 
+    .header .header__menu--active {
+        display: block;
+    }
 
 }
 
