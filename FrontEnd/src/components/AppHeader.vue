@@ -241,6 +241,7 @@ export default {
 
     .header .header__menu--active {
         display: block;
+        z-index: 1;
     }
 
 }
