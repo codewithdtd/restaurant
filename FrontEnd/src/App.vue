@@ -31,5 +31,8 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
     padding: 0;
+    --color-main: rgb(255, 224, 26);
+    --color-background: #4d4d4d;
 }
+
 </style>

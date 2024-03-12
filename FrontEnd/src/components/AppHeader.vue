@@ -79,7 +79,7 @@ export default {
 .header {
     background-color: rgb(77, 77, 77);
     align-items: center;
-    border: 2px solid #333;
+    /* border: 2px solid #333; */
     position: sticky;
     top: 0;
     display: flex;
@@ -170,7 +170,7 @@ export default {
 
 @media only screen and (max-width: 785px) {
     .header {
-        position: relative;
+        position: sticky;
     }
     .header .header__menu {
         position: absolute;
