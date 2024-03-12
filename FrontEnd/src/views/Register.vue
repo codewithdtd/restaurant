@@ -1,7 +1,7 @@
 <template>
     <div class="register">
         <form action="" method="" @submit.prevent="handleSubmit" >
-            <div class="alert alert-success">
+            <div v-if="register" class="alert alert-success">
                 Thành công
             </div>
             <h1>Đăng Ký</h1>
