@@ -34,6 +34,5 @@ export default (baseURL) => {
         }
         return config;
     });
-
     return api;
 };

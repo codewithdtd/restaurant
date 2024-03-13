@@ -4,7 +4,6 @@ class MenuService {
     this.api = createApiClient(baseUrl);
     }
     async getAll() {
-        console.log(localStorage.getItem('token'))
         return (await this.api.get("/")).data;
     }
     async getByCategory(id) {

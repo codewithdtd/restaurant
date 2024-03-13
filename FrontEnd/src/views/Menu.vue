@@ -13,7 +13,8 @@
         </div>
         <div class="menu__product col-lg-10 col-md-9 col-sm-10">
             <h1 class="menu__title">Thực Đơn</h1>
-            <div class="menu__product__list row" v-if="menu.length>0">
+            <p class="alert alert-success">{{ message }}</p>
+            <div class="menu__product__list" v-if="menu.length>0">
                 <div class="menu__product__item col-lg-2 col-sm-3" v-for="item in menu">
                     <div class="menu__product__item__image">
                         <img :src=item.image alt="" class="">
@@ -23,7 +24,8 @@
                         <p class="menu__product__item__price">{{ item.price.toLocaleString() }}</p>
                     </div>
                     <div class="menu__product__item__button">
-                        <button class="">Mua</button>
+                        <button v-if="item.quanlity > 0" @click="addToCart(item)">Mua</button>
+                        <button v-else class="btn btn-secondary" disabled>Hết hàng</button>
                         <a href="#">Xem thêm</a>
                     </div>
                 </div>
@@ -36,6 +38,7 @@
 
 <script>
 import menuService from "@/services/menu.service";
+import userService from "@/services/user.service";
 export default {
     async mounted() {
         this.category = await menuService.getAllCategory();
@@ -46,12 +49,22 @@ export default {
             menu: [],
             category: [],
             id_category: '',
+            message: '',
         }
     },
     methods: {
         async findCategory(id) {  
             // return this.menu.filter(items => items.category == id)  
             this.menu = id ? await menuService.getByCategory(id) : await menuService.getAll();
+        },
+        async addToCart(data) {
+            const { _id, price, name, image } = data;
+            const filterData = { _id, price, name, image }
+            const success = await userService.addCart(filterData)
+            if(!success.message){
+                this.message = "Thành công"
+            }
+            else this.message = "Thất bại"
         }
     }
 }   
@@ -60,7 +73,8 @@ export default {
 <style>
 
 .menu {
-    height: 100vh;
+    height: fit-content;
+    min-height: 100vh;
 }
 
 .menu__title {
@@ -100,12 +114,16 @@ export default {
     cursor: pointer;
 }
 
+.menu__product__list {
+    display: flex;
+    flex-wrap: wrap;
+}
 
 .menu__product__item {
     height: 40vh;
     background-color: #00000077;
     padding: 0;
-    border-radius: 20px;
+    border-radius: 10px;
     overflow: hidden;
     border: 1px solid #fff;
     display: flex;
@@ -126,8 +144,7 @@ export default {
 }
 
 .menu__product__item__image img{
-    width: 100%;
-    height: 100% ;   
+    height: 100%;
 }
 
 .menu__product__item__information {
