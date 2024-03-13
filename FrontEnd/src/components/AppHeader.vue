@@ -37,8 +37,8 @@
                         <i class="fa-solid fa-bag-shopping header__icon__cart"></i>
                     </router-link>
                 </div>
-        
-                <div class="header__function__item header__function__info">
+                
+                <div v-if="!userStore.login" class="header__function__item header__function__info">
                     <router-link to="/register">
                         <button class="btn btn-outline-warning">Đăng ký</button>
                     </router-link>
@@ -46,30 +46,69 @@
                         <button class="btn btn-warning">Đăng nhập</button>
                     </router-link>
                 </div>
+                <div v-else class="header__function__item header__function__info header__function__info--auth">
+                    <p><i class="fa-regular fa-user"></i>{{ userStore.user.name }}</p>
+                    <div class="header__function__info__nav">
+                        <router-link to="/">Thông tin</router-link>
+                        <router-link to="/">Đơn hàng</router-link>
+                        <button class="btn btn-outline-warning" @click="userStore.logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import userService from '@/services/user.service';
 import Search from './Search.vue';
-// import MobileHeader from './MobileHeader.vue';
-// import NavbarHide from './NavbarHide.vue';
+import { useUserStore } from '@/stores/userStore';
 
+
+// export default {
+//     components: { Search },
+//     setup() {
+//         // Sử dụng ref để khai báo biến showNav
+//         const userStore = useUserStore();
+//         const showNav = ref(false);
+
+//         // Định nghĩa hàm handleNav bằng Composition API
+//         const handleNav = () => {
+//             showNav.value = !showNav.value;
+//         };
+
+//         // Trả về biến showNav và hàm handleNav
+//         return {
+//             showNav,
+//             handleNav,
+//             userStore,
+//         };
+//     }
+// }
 
 export default {
-    components: { Search,  },
-    methods: {
-        handleNav() {
-            this.showNav = !this.showNav;
-        },
+    components: { Search },
+    created() {
+        this.getUser();
     },
     data() {
         return {
             showNav: false,
-        }
+            userStore: useUserStore(),
+            user: {},
+        };
     },
-
+    methods: {
+        handleNav() {
+            this.showNav = !this.showNav;
+        },
+        async getUser() {
+            console.log(this.userStore.login)
+            if(this.userStore.login) {
+                this.user = await userService.get(this.userStore.user._id);
+            }
+        }
+    }
 }
 </script>
 
@@ -164,6 +203,44 @@ export default {
     flex-grow: 1;
 }
 
+.header__function__info--auth {
+    display: flex;
+    color: #fff;
+    align-items: center;
+    padding-right: 10px;
+    position: relative;
+}
+.header__function__info p{
+    margin: auto;
+    margin-right: 10px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.header__function__info .header__function__info__nav {
+    position: absolute;
+    top: 100%;
+    background-color: #4d4d4d;
+    box-shadow: rgba(255, 255, 255, 0.24) 0px 3px 8px;
+    width: 80%;
+    display: none;
+}
+
+.header__function__info:hover .header__function__info__nav {
+    display: block;
+}
+
+.header__function__info .header__function__info__nav a {
+    display: block;
+    width: 80%;
+    color: #fff;
+    margin: 5px 10px;
+    text-decoration: none;
+}
+
+.header__function__info .header__function__info__nav a:hover {
+    background-color: #686868;
+}
 .header .header__button {
     display: none;
 }
@@ -180,6 +257,7 @@ export default {
         flex-direction: column;
         align-items: end;
         padding: 20px;
+        box-shadow: rgba(255, 255, 255, 0.24) 0px 3px 8px;
         display: none;
     }
     .header__navbar, .header__function {
