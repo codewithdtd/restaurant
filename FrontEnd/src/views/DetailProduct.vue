@@ -36,7 +36,9 @@ export default {
         },
          async addToCart(data) {
             const { _id, price, name, image } = data;
-            const filterData = { _id, price, name, image }
+            const quanlity = {quanlity: this.quanlity};
+            const filterData = { _id, price, name, image, ...quanlity }
+
             const success = await userService.addCart(filterData)
             if(!success.message){
                 this.message = "Thành công"
