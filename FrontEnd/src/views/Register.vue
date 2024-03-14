@@ -103,7 +103,8 @@ export default {
 }
 
 .register form {
-    background-color: rgba(255, 255, 255, 0.208);
+    /* background-color: rgba(255, 255, 255, 0.208); */
+    background-color: rgba(0, 0, 0, 0.589);
     border-radius: 40px;
     padding: 10px 20px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
