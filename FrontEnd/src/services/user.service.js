@@ -1,4 +1,6 @@
 import createApiClient from "./api.service";
+import Cookies from "js-cookie";
+
 class UserService {
     constructor(baseUrl = "/api/user") {
     this.api = createApiClient(baseUrl);
@@ -11,12 +13,10 @@ class UserService {
     }
     async login(data) {
         const user = (await this.api.post("/login", data)).data; 
-        localStorage.setItem('token', user.accessToken)
         return user;
     }
     async logout() {
         const user = (await this.api.post("/logout")).data; 
-        localStorage.removeItem('token')
         return user;
     }
     // CART
@@ -28,6 +28,9 @@ class UserService {
     }
     async updateCart(data) {
         return (await this.api.put(`/cart`,data)).data;
+    }
+    async deleteCart(data) {
+        return (await this.api.delete("/cart/"+data)).data;
     }
 }
 export default new UserService();

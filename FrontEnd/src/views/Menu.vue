@@ -1,5 +1,10 @@
 <template>
     <div class="menu row">
+        <div class="notification" @click="hideNotify" v-if="message"> 
+            <div class="notification__message"><i class="fa-solid fa-circle-check"></i>
+                <p>{{ message }}</p>
+            </div>
+        </div>
         <div class="menu__category col-lg-2 col-md-3 col-sm-2">
             <h4>Danh mục</h4>
             <ul class="menu__category_list">
@@ -13,7 +18,6 @@
         </div>
         <div class="menu__product col-lg-10 col-md-9 col-sm-10">
             <h1 class="menu__title">Thực Đơn</h1>
-            <p class="alert alert-success">{{ message }}</p>
             <div class="menu__product__list" v-if="menu.length>0">
                 <div class="menu__product__item col-lg-2 col-sm-3" v-for="item in menu">
                     <div class="menu__product__item__image">
@@ -65,6 +69,9 @@ export default {
                 this.message = "Thành công"
             }
             else this.message = "Thất bại"
+        },
+        hideNotify() {
+            this.message = ''
         }
     }
 }   
@@ -75,6 +82,7 @@ export default {
 .menu {
     height: fit-content;
     min-height: 100vh;
+    position: relative;
 }
 
 .menu__title {
@@ -193,6 +201,47 @@ export default {
     font-size: 0.7rem;
     align-self: end;
     color: var(--color-main);
+}
+
+.notification {
+    position: absolute;
+    background-color: #00000072;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+    color: #00a933;
+    display: flex;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.5s ease;;
+}
+
+.notification {
+    position: absolute;
+    background-color: #00000072;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+    color: #00a933;
+    display: flex;
+    opacity: 1;
+    z-index: 1;
+    transition: opacity 0.5s ease;;
+}
+
+.notification__message {
+    margin: auto;
+    margin-top: 15%;
+    background-color: #ffffff;
+    /* width: 200px;
+    height: 120px; */
+    padding: 30px 80px;
+    text-align: center;
+}
+.notification__message i {
+    font-size: 3rem;
 }
 
 </style>
