@@ -55,6 +55,11 @@ const routes = [
         name: "Contact",
         component: Contact,
     },
+    // {
+    //     path: "/category/:id",
+    //     name: "Menu",
+    //     component: Menu,
+    // },
 ]
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
