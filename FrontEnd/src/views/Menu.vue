@@ -153,6 +153,7 @@ export default {
 
 .menu__product__item__image img{
     height: 100%;
+    width: 100%;
 }
 
 .menu__product__item__information {
