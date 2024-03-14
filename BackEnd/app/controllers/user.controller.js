@@ -229,6 +229,8 @@ exports.addCart = async (req,res,next) => {
         else if(findCart && countProduct.quanlity >= cartItem.quanlity) {
             countProduct.quanlity = countProduct.quanlity - cartItem.quanlity;
             findCart.quanlity+=cartItem.quanlity;
+            const total = cartItem.price*cartItem.quanlity+findCart.price;
+            findCart.price = total;
             // cartItems.push(cartItem)
 
             const updateMenu = await menuService.update(cartItem.product._id,countProduct)

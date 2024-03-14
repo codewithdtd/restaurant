@@ -8,7 +8,7 @@
                 </div>
                 <div class="cart__body__item__name col-sm-3">
                     <p>{{ item.product.name }}</p>
-                    <p>Loại</p>
+                    <!-- <p>Loại: {{ item.product.category }}</p> -->
                 </div>
                 <div class="cart__body__item__quanlity col-sm-2">
                     <!-- <button @click="item.quanlity > 1 ? item.quanlity-- : item.quanlity">-</button> -->

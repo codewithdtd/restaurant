@@ -61,7 +61,7 @@ class CartService {
         };
         const result = await this.Cart.findOneAndUpdate(
             filter,
-            { $set: {"quanlity": cart.quanlity, price: cart.price*cart.quanlity } },
+            { $set: {"quanlity": cart.quanlity, price: cart.price } },
             { returnDocument: "after" }
         );
         return result;
