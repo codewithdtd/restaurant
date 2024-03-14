@@ -48,6 +48,7 @@ export default {
                 user.value = await userService.login(data);
                 const { accessToken, ...orther } = user.value;
                 userStore.setUser(orther)
+                userStore.cart = await userService.getCart();
                 router.push('/')
             } catch (error) {
                 console.log(error);
@@ -86,7 +87,7 @@ export default {
 }
 
 .login form {
-    background-color: rgba(255, 255, 255, 0.208);
+    background-color: rgba(0, 0, 0, 0.589);
     border-radius: 40px;
     padding: 10px 20px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

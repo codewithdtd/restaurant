@@ -51,7 +51,7 @@
                     <div class="header__function__info__nav">
                         <router-link to="/">Thông tin</router-link>
                         <router-link to="/">Đơn hàng</router-link>
-                        <button class="btn btn-outline-warning" @click="userStore.logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+                        <button class="btn btn-outline-warning" @click="userStore.logout()"><i class="fa-solid fa-right-from-bracket"></i></button>
                     </div>
                 </div>
             </div>
@@ -103,7 +103,6 @@ export default {
             this.showNav = !this.showNav;
         },
         async getUser() {
-            console.log(this.userStore.login)
             if(this.userStore.login) {
                 this.user = await userService.get(this.userStore.user._id);
             }
@@ -123,6 +122,7 @@ export default {
     top: 0;
     display: flex;
     justify-content: space-between;
+    z-index: 1;
     /* height: 100px; */
 }
 .header__logo {
