@@ -28,12 +28,15 @@ class MenuService {
     }
     async create(payload) {
         const menu = this.infoMenu(payload);
-        const result = await this.Menu.findOneAndUpdate(
-            menu,
-            { $set: {created_at: new Date().getDate()+'/'+ (new Date().getMonth()+1)+'/'+new Date().getFullYear()}},
-            { returnDocument: "after", upsert: true }
-        );
-        return result;
+        if(menu.quanlity >= 0) {
+            const result = await this.Menu.findOneAndUpdate(
+                menu,
+                { $set: {created_at: new Date().getDate()+'/'+ (new Date().getMonth()+1)+'/'+new Date().getFullYear()}},
+                { returnDocument: "after", upsert: true }
+            );
+            return result;
+        }
+        return false;
     }
 
     async find(filter) {
@@ -56,8 +59,7 @@ class MenuService {
         const result = await this.Menu.findOne({
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
         });
-
-        return result.toArray();
+        return result;
     }
 
     async findByCategoryName(name) {
@@ -75,13 +77,17 @@ class MenuService {
         };
         const update = this.infoMenu(payload);
         update.updated_at = new Date().getDate()+'/'+ (new Date().getMonth()+1)+'/'+new Date().getFullYear();
-        const result = await this.Menu.findOneAndUpdate(
-            filter,
-            { $set: update },
-            { returnDocument: "after" }
-        );
-        return result;
-    }
+        if(update.quanlity >= 0)  { 
+            const result = await this.Menu.findOneAndUpdate(
+                filter,
+                { $set: update },
+                { returnDocument: "after" }
+            );
+
+            return result;
+        }
+        return false;
+    }    
     
     async updateProductCategory(name, payload) {
         // const update = this.infoMenu(payload);

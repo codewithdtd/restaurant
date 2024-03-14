@@ -95,10 +95,12 @@ exports.delete = async (req, res, next) => {
 }
 
 
-exports.findByCategoryName = async (_req, res, next) => {
+exports.findOneCategory = async (_req, res, next) => {
     try {
         const menuService = new MenuService(MongoDB.client);
-        const documents = await menuService.findFavorite();
+        const categoryService = new CategoryService(MongoDB.client);
+        const categoryName = await categoryService.findById(_req.params.id)
+        const documents = await menuService.findByCategoryName(categoryName.name);
         return res.send(documents);
     } catch (error) {
         return next (
@@ -159,23 +161,23 @@ exports.findAllCategory = async (req, res, next) => {
 };
 
 // Find a sigle category with an id
-exports.findOneCategory = async (req, res, next) => {
-    try {
-        const categoryService = new CategoryService(MongoDB.client);
-        const document = await categoryService.findById(req.params.id);
-        if (!document) {
-            return next(new ApiError(404, "category not found"));
-        }
-        return res.send(document);
-    } catch (error) {
-        return next(
-            new ApiError(
-                500,
-                `Error retrieving category with id=${req.params.id}`
-            )
-        );
-    }
-};
+// exports.findOneCategory = async (req, res, next) => {
+//     try {
+//         const categoryService = new CategoryService(MongoDB.client);
+//         const document = await categoryService.findById(req.params.id);
+//         if (!document) {
+//             return next(new ApiError(404, "category not found"));
+//         }
+//         return res.send(document);
+//     } catch (error) {
+//         return next(
+//             new ApiError(
+//                 500,
+//                 `Error retrieving category with id=${req.params.id}`
+//             )
+//         );
+//     }
+// };
 
 
 // Update a category by the id in the request

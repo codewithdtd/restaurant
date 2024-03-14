@@ -18,14 +18,18 @@ router.route("/login").post(user.login)
 router.route("/refresh").post(user.refreshToken)    
 
 // LOGOUT
-router.route("/logout").post(user.logout)
+router.route("/logout").post(AuthToken.verifyToken, user.logout)
 
 // Cart
 router.route("/cart")
     .post(AuthToken.verifyToken, user.addCart)
     .put(AuthToken.verifyToken, user.updateCart)
     .get(AuthToken.verifyToken, user.findAllCartUser)
+
+router.route("/cart/:id")
     .delete(AuthToken.verifyToken, user.deleteCart)
+
+
 
 // Order
 router.route("/order")
@@ -34,7 +38,7 @@ router.route("/order")
     .get(AuthToken.verifyToken, user.findAllOrderUser)
 
 router.route("/:id")
-    .get(user.findOne)
+    .get(AuthToken.verifyToken, user.findOne)
     .put(user.update)
     .delete(user.delete)
     // .delete(AuthToken.verifyTokenAdmin, user.delete);

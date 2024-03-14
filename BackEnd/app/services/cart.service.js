@@ -21,47 +21,62 @@ class CartService {
     }
     async create(user, payload) {
         const cart = this.infocart(payload);
-        const result = await this.Cart.findOneAndUpdate(
-            cart,
-            { $set: {
-                user: user,
-                price: payload.quanlity*payload.product.price
-                }
-            },
-            { returnDocument: "after", upsert: true }
-        );
-        return result;
+        if(cart.quanlity > 0) {
+            const result = await this.Cart.findOneAndUpdate(
+                cart,
+                { $set: {
+                    user: user,
+                    price: payload.quanlity*payload.product.price
+                    }
+                },
+                { returnDocument: "after", upsert: true }
+            );
+            return result;
+        }
+        return false;
     }
 
     async update(id, payload) {
         const filter = {
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
         };
-        console.log(filter)
         const update = this.infocart(payload);
-        console.log(update)
-        const result = await this.Cart.findOneAndUpdate(
-            filter,
-            { $set: update },
-            { returnDocument: "after" }
-        );
-        return result;
+        if(update.quanlity >= 0)  { 
+            const result = await this.Cart.findOneAndUpdate(
+                filter,
+                { $set: update },
+                { returnDocument: "after" }
+            );
+            return result;
+        }
+        return false;
     }
+
+
+
 
     async updateQuanlity(cart) {
         const filter = {
-            _id: ObjectId.isValid(cart._id.$oid) ? new ObjectId(cart._id.$oid) : null,
+            _id: ObjectId.isValid(cart._id) ? new ObjectId(cart._id) : null,
         };
         const result = await this.Cart.findOneAndUpdate(
             filter,
-            { $set: {"quanlity": cart.quanlity } },
+            { $set: {"quanlity": cart.quanlity, price: cart.price*cart.quanlity } },
             { returnDocument: "after" }
         );
         return result;
     }
-    async find(id) {
-        const result = await this.Cart.find({ 'product._id': { $eq: id } });
-        return result.toArray();
+    async find(user, id) {
+        const result = await this.Cart.findOne({ 'product._id': { $eq: id }, user: user });
+        return result;
+    }
+
+    async findById(id) {
+        const filter = {
+            _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
+        };
+        const result = await this.Cart.findOne(filter);
+        return result ?? false;
     }
 
     async findAllCartUser(id) {
