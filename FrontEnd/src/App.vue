@@ -1,9 +1,9 @@
 <script>
 import AppHeader from "@/components/AppHeader.vue";
-
+import Footer from "./components/Footer.vue";
 export default {
     components: {
-        AppHeader,
+        AppHeader, Footer
     },
 
 }
@@ -16,6 +16,8 @@ export default {
         <div>
             <router-view />
         </div>
+
+        <Footer />
     </div>
 </template>
 
