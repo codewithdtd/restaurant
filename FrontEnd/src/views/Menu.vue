@@ -20,9 +20,11 @@
             <h1 class="menu__title">Thực Đơn</h1>
             <div class="menu__product__list" v-if="menu.length>0">
                 <div class="menu__product__item col-lg-2 col-sm-3" v-for="item in menu">
-                    <div class="menu__product__item__image">
+
+                    <router-link :to="{ path: '/menu/' + item._id}" class="menu__product__item__image">
                         <img :src=item.image alt="" class="">
-                    </div>
+                    </router-link>
+                    
                     <div class="menu__product__item__information">
                         <p class="menu__product__item__name">{{ item.name }}</p>
                         <p class="menu__product__item__price">{{ item.price.toLocaleString() }}</p>
@@ -30,7 +32,7 @@
                     <div class="menu__product__item__button">
                         <button v-if="item.quanlity > 0" @click="addToCart(item)">Mua</button>
                         <button v-else class="btn btn-secondary" disabled>Hết hàng</button>
-                        <a href="#">Xem thêm</a>
+                        <router-link :to="{ path: '/menu/' + item._id}">Xem thêm</router-link>
                     </div>
                 </div>
             </div>
