@@ -12,6 +12,9 @@ class MenuService {
     async getAllCategory() {
         return (await this.api.get("/category")).data;
     }
+    async getOne(id) {
+        return (await this.api.get("/"+id)).data;
+    }
 
 }
 export default new MenuService();
