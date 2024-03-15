@@ -9,7 +9,7 @@
             </div>
             <div class="login__info__item">
                 <label for="" class="">Mật khẩu:</label>
-                <input type="text" v-model="password">
+                <input type="password" v-model="password">
             </div>
          
             <p class="m-1">

@@ -18,11 +18,11 @@
             <div class="register__info ">
                 <div class="register__info__item">
                     <label for="" class="">Mật khẩu:</label>
-                    <input type="text" v-model="password">
+                    <input type="password" v-model="password">
                 </div>
                 <div class="register__info__item">
                     <label for="" class="">Xác nhận mật khẩu:</label>
-                    <input type="text" v-model="password_comfirm">
+                    <input type="password" v-model="password_comfirm">
                 </div>
             </div>
             <div class="register__info register__info__item">

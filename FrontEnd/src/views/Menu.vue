@@ -45,6 +45,8 @@
 <script>
 import menuService from "@/services/menu.service";
 import userService from "@/services/user.service";
+import { useUserStore } from "@/stores/userStore";
+
 export default {
     async mounted() {
         this.category = await menuService.getAllCategory();
@@ -64,13 +66,23 @@ export default {
             this.menu = id ? await menuService.getByCategory(id) : await menuService.getAll();
         },
         async addToCart(data) {
-            const { _id, price, name, image } = data;
-            const filterData = { _id, price, name, image }
-            const success = await userService.addCart(filterData)
-            if(!success.message){
-                this.message = "Thành công"
+            if (!useUserStore().login) {
+              // Hiển thị thông báo yêu cầu đăng nhập
+              const confirmed = confirm('Bạn cần đăng nhập để mua hàng. Bạn có muốn đăng nhập ngay không?');
+              if (confirmed) {
+                // Chuyển hướng đến trang đăng nhập
+                this.$router.push('/login'); // Thay đổi '/login' thành địa chỉ của trang đăng nhập của bạn
+                }
             }
-            else this.message = "Thất bại"
+            else {
+                const { _id, price, name, image } = data;
+                const filterData = { _id, price, name, image }
+                const success = await userService.addCart(filterData)
+                if(!success.message){
+                    this.message = "Thành công"
+                }
+                else this.message = "Thất bại"
+            }
         },
         hideNotify() {
             this.message = ''
