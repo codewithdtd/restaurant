@@ -91,6 +91,7 @@ export default {
     align-items: center;
     flex-direction: column;
     text-align: center;
+    background: url('../assets/bg.jpg');
 }
 
 .register h1{
