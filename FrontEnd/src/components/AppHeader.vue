@@ -116,13 +116,15 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 
 .header {
-    background-color: rgb(77, 77, 77);
+    /* background-color: rgb(77, 77, 77) */
+    background-color: var(--color-background);
     align-items: center;
     /* border: 2px solid #333; */
     position: sticky;
     top: 0;
     display: flex;
     justify-content: space-between;
+    box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 8px 0px;
     z-index: 1;
     /* height: 100px; */
 }
@@ -221,7 +223,7 @@ export default {
 .header__function__info .header__function__info__nav {
     position: absolute;
     top: 100%;
-    background-color: #4d4d4d;
+    background-color: var(--color-background);
     box-shadow: rgba(255, 255, 255, 0.24) 0px 3px 8px;
     width: 80%;
     display: none;
@@ -254,7 +256,7 @@ export default {
         position: absolute;
         top: 100%;
         right: 0;
-        background-color:#4d4d4d;
+        background-color: var(--color-background);
         flex-direction: column;
         align-items: end;
         padding: 20px;

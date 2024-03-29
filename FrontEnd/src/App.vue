@@ -29,12 +29,12 @@ export default {
 #app {
     /* font-family: "Noto Sans HK", sans-serif; */
     font-family: "Work Sans", sans-serif;
-    background: url(./assets/b.jpg);
-    background-repeat: repeat;
+    /* background: url(./assets/bg.jpg); */
+    background-repeat: no-repeat;
     background-size: cover;
     padding: 0;
-    --color-main: rgb(255, 224, 26);
-    --color-background: #4d4d4d;
+    --color-main: rgb(223, 197, 27);
+    --color-background: rgb(37, 37, 37);
 }
 
 </style>

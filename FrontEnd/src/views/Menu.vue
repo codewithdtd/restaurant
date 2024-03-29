@@ -97,6 +97,7 @@ export default {
     height: fit-content;
     min-height: 100vh;
     position: relative;
+    background: url("../assets/bg.jpg");
 }
 
 .menu__title {
