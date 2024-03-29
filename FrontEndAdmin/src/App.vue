@@ -8,13 +8,13 @@ export default {
 
 <template>
     <div id="app">
-        <!-- <div>
+        <div>
             <Navbar />
         </div>
         <div>
             <router-view />
-        </div> -->
-        <Login />
+        </div>
+        <!-- <Login /> -->
     </div>
 </template>
 
