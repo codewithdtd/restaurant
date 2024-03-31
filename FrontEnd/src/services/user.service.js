@@ -32,5 +32,9 @@ class UserService {
     async deleteCart(data) {
         return (await this.api.delete("/cart/"+data)).data;
     }
+    // ORDER
+    async addOrder(data) {
+        return (await this.api.post("/order", data)).data;
+    }
 }
 export default new UserService();

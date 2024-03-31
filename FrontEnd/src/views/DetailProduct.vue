@@ -1,12 +1,6 @@
 <template>
     <div class="detail">
-        <div class="notification" @click="hideNotify" v-if="message"> 
-            <div class="notification__message"><i class="fa-solid fa-circle-check"></i>
-                <p>{{ message }}</p>
-            </div>
-        </div>
-
-
+        <Notification :message="message" />
        <div v-if="item" class="col-sm-11 row">
         <div class="detail__image col-sm-6">
             <img :src="item.image" alt="">
@@ -15,6 +9,7 @@
             <h3 class="detail__name">{{ item.name }}</h3>
             <p>{{ item.description }}</p>
             <p>Giá: {{ item.price.toLocaleString() }}</p>
+            <p>Số lượng còn lại: {{ item.quanlity }}</p>
             <input type="number" min="1" v-model="quanlity">
             <button class="btn btn-warning" @click="addToCart(this.item)">Thêm vào giỏ hàng</button>
         </div>
@@ -25,14 +20,25 @@
 <script>
 import menuService from '@/services/menu.service';
 import userService from '@/services/user.service';
+import Notification from '@/components/Notification.vue';
 export default {
-    mounted() {
-        this.getItem();
+    // mounted() {
+    //     this.getItem();
+    // },
+    components: {
+        Notification
+    },
+    watch: {
+        '$route.params.id': {
+            immediate: true, // Gọi ngay lập tức khi component được mounted
+            handler(newId, oldId) {
+                this.getItem(); // Gọi phương thức getItem() khi params id thay đổi
+            }
+        }
     },
     methods: {
         async getItem() {
-            if(!this.item)
-                this.item = await menuService.getOne(this.$route.params.id);
+            this.item = await menuService.getOne(this.$route.params.id);
         },
          async addToCart(data) {
             const { _id, price, name, image } = data;
@@ -67,12 +73,19 @@ export default {
     display: flex;
     padding-top: 50px;
     color: #fff;
-    background-color: #00000083;
+    /* background-color: #00000083; */
+    background: #000000d7;    
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .detail__image img {
     max-width: 80%;
+    max-height: 70%;
 }
 
+.detail__info input{
+    max-width: 50px;
+}
 
 </style>

@@ -30,6 +30,7 @@ export default {
     /* font-family: "Noto Sans HK", sans-serif; */
     font-family: "Work Sans", sans-serif;
     /* background: url(./assets/bg.jpg); */
+    background: url('https://media.architecturaldigest.com/photos/6140c8b1e7f3368a585e1c58/16:9/w_2560%2Cc_limit/_SI_4383-Edit.jpg');    
     background-repeat: no-repeat;
     background-size: cover;
     padding: 0;

@@ -5,7 +5,7 @@ import Menu from "@/views/Menu.vue";
 import Order from "@/views/Order.vue";
 import Cart from "@/views/Cart.vue";
 import Login from "@/views/Login.vue";
-import Payment from "@/views/Payment.vue";
+// import Payment from "@/views/Payment.vue";
 import About from "@/views/About.vue";
 import Contact from "@/views/Contact.vue";
 import DetailProduct from "@/views/DetailProduct.vue";
@@ -60,11 +60,11 @@ const routes = [
         name: "Order",
         component: Order,
     },
-    {
-        path: "/payment",
-        name: "Payment",
-        component: Payment,
-    },
+    // {
+    //     path: "/payment",
+    //     name: "Payment",
+    //     component: Payment,
+    // },
     {
         path: "/about",
         name: "About",

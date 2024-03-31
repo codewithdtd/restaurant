@@ -1,7 +1,8 @@
 <template>
-    <div class="cart">
-        <h1 class="cart__title">Giỏ hàng</h1>
-        <div class="cart__body" v-if="userStore.cart.length > 0">
+    <Notification :message="message" />
+    <h1 class="cart__title" id="cart__title">GIỎ HÀNG</h1>
+    <div class="cart row">
+        <div class="cart__body col-md-8" v-if="userStore.cart.length > 0">
             <div v-for="item in userStore.cart" :key="item._id" class="cart__body__item row col-sm-11">
                 <div class="cart__body__item__image col-sm-2">
                     <img :src=item.product.image alt="">
@@ -23,20 +24,21 @@
                     <i class="fa-solid fa-x btn btn-danger" @click="deleteCart(item)"></i>
                 </div>
             </div>
-            <div class="cart__body__payment col-sm-11">
-                <p>Tổng tiền: {{ total.toLocaleString() }}</p>
-                <router-link to="/" class="btn btn-warning">Thanh toán</router-link>
-            </div>
         </div>
-        <div v-else class="cart__body__item row col-sm-11">Chưa có sản phẩm nào trong giỏ hàng</div>
+        <div v-else class="cart__body__item row col-md-8">Chưa có sản phẩm nào trong giỏ hàng</div>
+        <Payment :total="total" @showNotify="showNotify"/>
     </div>
 </template>
 
 <script>
 import { useUserStore } from '@/stores/userStore';
 import userService from '@/services/user.service';
-
+import Payment from '../components/Payment.vue';
+import Notification from '../components/Notification.vue'
 export default {
+    components: {
+        Payment, Notification
+    },
     created() {
         this.getCart();
     },
@@ -63,6 +65,9 @@ export default {
                 this.getCart()
             else 
                 this.message = "Không thể xóa"
+        },
+        showNotify(message) {
+            this.message = message
         }
     },
     data() {
@@ -80,29 +85,46 @@ export default {
 .cart {
     height: fit-content;
     min-height: 100vh;
+    background: #484646;
     /* height: 100vh; */
+    /* background: url('../assets/bg.jpg'); */
+    /* background: rgb(194, 194, 194); */
+    /* background-color: rgb(62, 60, 55); */
+    background: #000000d7;    
+
+    background-repeat: no-repeat;
+    background-size: cover;
     color: #fff;
+    /* position: relative; */
+
 }
-.cart__title {
-    font-family: "Dancing Script", cursive;
+#cart__title {
+    /* font-family: "Dancing Script", cursive; */
     text-align: center;
     color: var(--color-main);
-    /* font-size: 2.5rem; */
-    margin: 10px;
+    /* color: #f6f5f5; */
+    height: fit-content;
+    font-size: 2.5rem;
+    padding: 10px;
+    /* background: rgb(194, 194, 194); */
+    /* background-color: rgb(62, 60, 55); */
+    background: #000000d7;    
+
+    margin: 0;
 }
 
 .cart .cart__body__item {
     height: 25vh;
-    background-color: rgba(36, 35, 32, 0.878);
+    background-color: rgba(100, 97, 90, 0.859);
     align-items: center;
     /* box-shadow: rgba(255, 255, 255, 0.426) 1.95px 1.95px 2.6px; */
-    border-bottom: 3px solid #ffffff92 ;
+    border-bottom: 3px solid #fdfdfd92 ;
     border-right: 3px solid #ffffff92 ;
     border-top: 1px solid #6d6d6d92 ;
     border-left: 1px solid #6d6d6d92 ;
-    margin: auto;
-    border-radius: 5px;
-    margin-bottom: 10px;
+    margin: 0 auto;
+    /* border-radius: 5px; */
+    /* margin-bottom: 10px; */
 }
 .cart .cart__body__item__image {
     height: 90%;
@@ -140,8 +162,4 @@ export default {
     align-items: center;
 }
 
-.cart__body__payment {
-    text-align: end;
-    font-weight: 700;
-}
 </style>

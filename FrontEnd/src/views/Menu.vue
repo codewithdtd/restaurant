@@ -1,26 +1,29 @@
 <template>
-    <div class="menu row">
+    <div class="menu">
         <div class="notification" @click="hideNotify" v-if="message"> 
             <div class="notification__message"><i class="fa-solid fa-circle-check"></i>
                 <p>{{ message }}</p>
             </div>
         </div>
-        <div class="menu__category col-lg-2 col-md-3 col-sm-2">
-            <h4>Danh mục</h4>
-            <ul class="menu__category_list">
-                <li class="menu__category__list__item" @click="findCategory('')">
+        <div class="menu__category col-lg-2 col-md-3">
+            <h4>Danh mục
+                <span class="" @click="showCategory">
+                    <i class="fa-solid fa-caret-down"></i>
+                </span>       
+            </h4>  
+            <ul class="menu__category_list" :class="{'menu__category_list--active': show_category == true}">
+                <li class="menu__category__list__item" :class="{ 'menu__category__list__item--active': id_category === '' }" @click="findCategory('')">
                     Tất cả
                 </li> 
-                <li class="menu__category__list__item" v-for="item in category" :key="item._id" @click="findCategory(item._id)">
+                <li class="menu__category__list__item" :class="{ 'menu__category__list__item--active': id_category === item._id }" v-for="item in category" :key="item._id" @click="findCategory(item._id)">
                     {{ item.name }}
                 </li>  
             </ul>
         </div>
-        <div class="menu__product col-lg-10 col-md-9 col-sm-10">
+        <div class="menu__product col-lg-10 col-md-9 col-12">
             <h1 class="menu__title">Thực Đơn</h1>
             <div class="menu__product__list" v-if="menu.length>0">
-                <div class="menu__product__item col-lg-2 col-sm-3" v-for="item in menu">
-
+                <div class="menu__product__item col-lg-2 col-3" v-for="item in menu">
                     <router-link :to="{ path: '/menu/' + item._id}" class="menu__product__item__image">
                         <img :src=item.image alt="" class="">
                     </router-link>
@@ -36,8 +39,7 @@
                     </div>
                 </div>
             </div>
-            <div class="menu__product__list row text-light" v-else>Không có sản phẩm nào</div>
-            
+            <div class="menu__product__list row text-light" v-else>Không có sản phẩm nào</div>         
         </div>
     </div>
 </template>
@@ -58,11 +60,13 @@ export default {
             category: [],
             id_category: '',
             message: '',
+            show_category: true,
         }
     },
     methods: {
         async findCategory(id) {  
-            // return this.menu.filter(items => items.category == id)  
+            // return this.menu.filter(items => items.category == id) 
+            this.id_category = id; 
             this.menu = id ? await menuService.getByCategory(id) : await menuService.getAll();
         },
         async addToCart(data) {
@@ -86,6 +90,10 @@ export default {
         },
         hideNotify() {
             this.message = ''
+        },
+        showCategory() {
+            console.log('click')
+            this.show_category = !this.show_category;
         }
     }
 }   
@@ -97,7 +105,10 @@ export default {
     height: fit-content;
     min-height: 100vh;
     position: relative;
-    background: url("../assets/bg.jpg");
+    /* background: url("../assets/bg.jpg"); */
+    background: #000000d7;    
+    margin-top: -10px;
+    display: flex;
 }
 
 .menu__title {
@@ -116,7 +127,7 @@ export default {
 
 .menu__category h4 {
     text-align: center;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .menu__category__list__item {
@@ -135,6 +146,10 @@ export default {
 .menu__category__list__item:hover {
     color: var(--color-main);
     cursor: pointer;
+}
+
+.menu__category__list__item--active {
+    color: var(--color-main);
 }
 
 .menu__product__list {
@@ -228,20 +243,6 @@ export default {
     width: 100%;
     color: #00a933;
     display: flex;
-    opacity: 0;
-    z-index: 1;
-    transition: opacity 0.5s ease;;
-}
-
-.notification {
-    position: absolute;
-    background-color: #00000072;
-    border: 2px solid #000000;
-    border-radius: 5px;
-    height: 100%;
-    width: 100%;
-    color: #00a933;
-    display: flex;
     opacity: 1;
     z-index: 1;
     transition: opacity 0.5s ease;;
@@ -258,6 +259,32 @@ export default {
 }
 .notification__message i {
     font-size: 3rem;
+}
+
+.menu__category span {
+    display: none;
+}
+
+@media screen and (max-width: 750px) {
+    .menu {
+        flex-direction: column;
+    }
+    .menu__category_list{
+        display: none;
+    }
+    .menu__category_list--active{
+        display: block;
+    }
+    .menu__category {
+        background-color: #46464656;
+    }
+    .menu__category span {
+        display: inline;
+        cursor: pointer;
+    }
+    .header__function__search {
+        min-width: 100%;
+    }
 }
 
 </style>

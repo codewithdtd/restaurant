@@ -24,7 +24,8 @@ export default {
 <style>
 .about {
     color: #fff;
-    background: url("../assets/bg.jpg");    
+    /* background: url("../assets/bg.jpg");     */
+    background: #000000d7;    
     background-repeat: no-repeat;
     background-size: cover;
     text-align: center;

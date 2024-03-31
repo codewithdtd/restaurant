@@ -1,11 +1,11 @@
 <template>
    <div class="header row">
-        <div class="header__logo col-sm-auto">
+        <div class="header__logo col-auto">
             <router-link to="/" class="header__logo__title">
                 JDa Chef
             </router-link>
         </div>
-        <div class="header__button col-sm-auto">
+        <div class="header__button col-auto">
             <div class="header__function__item header__function__cart">
                 <router-link to="/cart">
                     <i class="fa-solid fa-bag-shopping header__icon__cart"></i>
@@ -25,13 +25,13 @@
             </div>
                 
             <div class="header__function col-md-6 justify-content-end">
-                <!-- <Search /> -->
-                <div class="header__function__item header__function__search">
+                <Search />
+                <!-- <div class="header__function__item header__function__search">
                     <input type="text" class="search__input">
                     <button>
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
-                </div>
+                </div> -->
                 <div class="header__function__item header__function__cart">
                     <router-link to="/cart">
                         <i class="fa-solid fa-bag-shopping header__icon__cart"></i>
@@ -116,16 +116,15 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 
 .header {
-    /* background-color: rgb(77, 77, 77) */
     background-color: var(--color-background);
     align-items: center;
-    /* border: 2px solid #333; */
     position: sticky;
     top: 0;
     display: flex;
     justify-content: space-between;
     box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 8px 0px;
     z-index: 1;
+    width: calc(100% + 12px);
     /* height: 100px; */
 }
 .header__logo {
@@ -248,7 +247,7 @@ export default {
     display: none;
 }
 
-@media only screen and (max-width: 785px) {
+@media only screen and (max-width: 790px) {
     .header {
         position: sticky;
     }
@@ -285,7 +284,7 @@ export default {
     }
     
     .header .header__button {
-        margin-right: 20px;
+        /* margin-right: 20px; */
         color: #fff;
         font-size: 1.4rem;
         cursor: pointer;
@@ -323,6 +322,9 @@ export default {
     .header .header__menu--active {
         display: block;
         z-index: 1;
+    }
+    .header__function__search {
+        min-width: 100%;
     }
 
 }

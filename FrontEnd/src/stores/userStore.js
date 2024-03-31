@@ -20,7 +20,8 @@ export const useUserStore = defineStore('userStore', {
             this.user = null;
             this.login = false;
             this.cart = [];
-            await userService.logout();    
+            await userService.logout(); 
+            await router.push("/");
             // Xóa dữ liệu trong session storage ở đây
         }
     },

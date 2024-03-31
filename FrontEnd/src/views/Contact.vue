@@ -23,7 +23,8 @@ export default {
     height: 100vh;
     color: #fff;
     text-align: center;
-    background: url(../assets/bg.jpg);
+    /* background: url(../assets/bg.jpg); */
+    background: #000000d7;    
 }
 
 .contact h1 {
