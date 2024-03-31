@@ -99,6 +99,14 @@ class CartService {
         return result.deletedCount;
     }
 
+    async deleteAllCartUser(id) {
+        const filter = {
+            user: id,
+        };
+        const result = await this.Cart.deleteMany(filter);
+        return result;
+    }
+
 }
 
 

@@ -350,18 +350,20 @@ exports.addOrder = async (req, res, next) => {
         const cartService = new CartService(MongoDB.client);
         const orderService = new OrderService(MongoDB.client);
 
-        const carts = await cartService.findAllCartUser(user);
-        const newCarts = carts.map(({ user, _id,...rest}) => rest);
-        order.detail = newCarts;
+        // const carts = await cartService.findAllCartUser(user);
+        // const newCarts = carts.map(({ user, _id,...rest}) => rest);
+        // order.detail = newCarts;
 
-        let totalPrice = 0;
-        order.detail.forEach(item => { totalPrice+=item.price });
-        order.totalPrice = totalPrice;
+        // let totalPrice = 0;
+        // order.detail.forEach(item => { totalPrice+=item.price });
+        // order.totalPrice = totalPrice;
 
         // Create order
         const addOrder = await orderService.create(order);
+        await cartService.deleteAllCartUser(user);
         return res.json(addOrder);
     } catch (error) {
+        console.log(error)
         return next( new ApiError(
             500, "Đã có lỗi xảy ra!"
         ))

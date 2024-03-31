@@ -13,7 +13,7 @@ class OrderService {
             note: payload.note,
             deliveryDate: payload.deliveryDate,
             status: payload.status,
-            methodPayment: payload.methodPayment,
+            method_payment: payload.method_payment,
             detail: payload.detail,
             totalPrice: payload.totalPrice
         };
