@@ -1,22 +1,22 @@
 <template>
     <div class="login">
         <form action="" method="" @submit.prevent="handleSubmit">
+            <p class="alert alert-danger" v-if="error">Tài khoản hoặc mật khẩu không đúng</p>
             <h1>Đăng nhập</h1>
          
             <div class="login__info__item">
                 <label for="" class="">Số điện thoại:</label>
-                <input type="text" v-model="phone">
+                <input required type="text" v-model="phone">
             </div>
             <div class="login__info__item">
                 <label for="" class="">Mật khẩu:</label>
-                <input type="password" v-model="password">
+                <input required type="password" v-model="password">
             </div>
          
             <p class="m-1">
                 Bạn đã có tài khoản?
                 <router-link to="/register">Đăng ký</router-link>
             </p>
-            <p v-if="userStore.user != null">{{ userStore.user.name }}</p>
           
             <button class="m-1 btn btn-outline-warning">Đăng nhập</button>
         </form>
@@ -34,7 +34,7 @@ export default {
         const phone = ref('');
         const password = ref('');
         const user = ref(null)
-
+        const error = ref('');
         const router = useRouter();
         const userStore = useUserStore();
 
@@ -50,8 +50,9 @@ export default {
                 userStore.setUser(orther)
                 userStore.cart = await userService.getCart();
                 router.push('/')
-            } catch (error) {
-                console.log(error);
+            } catch (e) {
+                error.value = 'Sai';
+                console.log(e);
             }
 
         }
@@ -60,6 +61,7 @@ export default {
             password,
             handleSubmit,
             userStore,
+            error,
         }
     }
     

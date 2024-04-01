@@ -49,8 +49,8 @@
                 <div v-else class="header__function__item header__function__info header__function__info--auth">
                     <p><i class="fa-regular fa-user"></i>{{ userStore.user.name }}</p>
                     <div class="header__function__info__nav">
-                        <!-- <router-link to="/">Thông tin</router-link>
-                        <router-link to="/">Đơn hàng</router-link> -->
+                        <p>Thông tin</p>
+                        <p>Đơn hàng</p>
                         <button class="btn btn-outline-warning" @click="userStore.logout()"><i class="fa-solid fa-right-from-bracket"></i></button>
                     </div>
                 </div>
@@ -226,6 +226,7 @@ export default {
     box-shadow: rgba(255, 255, 255, 0.24) 0px 3px 8px;
     width: 80%;
     display: none;
+    text-align: center;
 }
 
 .header__function__info:hover .header__function__info__nav {
@@ -245,6 +246,12 @@ export default {
 }
 .header .header__button {
     display: none;
+}
+.fa-regular {
+    border: 2px solid #fff;
+    margin-right: 5px;
+    padding: 5px;
+    border-radius: 50%;
 }
 
 @media only screen and (max-width: 790px) {
