@@ -10,7 +10,7 @@ class MenuService {
             price: payload.price,
             category: payload.category,
             discount: payload.discount,
-            thumbnail: payload.thumbnail,
+            image: payload.image,
             status: payload.status,
             quanlity: payload.quanlity,
             description: payload.description,

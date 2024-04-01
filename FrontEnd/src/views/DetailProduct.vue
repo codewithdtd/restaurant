@@ -21,6 +21,7 @@
 import menuService from '@/services/menu.service';
 import userService from '@/services/user.service';
 import Notification from '@/components/Notification.vue';
+import { useUserStore } from '@/stores/userStore';
 export default {
     // mounted() {
     //     this.getItem();
@@ -41,15 +42,24 @@ export default {
             this.item = await menuService.getOne(this.$route.params.id);
         },
          async addToCart(data) {
-            const { _id, price, name, image } = data;
-            const quanlity = {quanlity: this.quanlity};
-            const filterData = { _id, price, name, image, ...quanlity }
+            if (!useUserStore().login) {
+              // Hiển thị thông báo yêu cầu đăng nhập
+              const confirmed = confirm('Bạn cần đăng nhập để mua hàng. Bạn có muốn đăng nhập ngay không?');
+              if (confirmed) {
+                // Chuyển hướng đến trang đăng nhập
+                this.$router.push('/login'); // Thay đổi '/login' thành địa chỉ của trang đăng nhập của bạn
+                }
+            } else {
+                const { _id, price, name, image } = data;
+                const quanlity = {quanlity: this.quanlity};
+                const filterData = { _id, price, name, image, ...quanlity }
 
-            const success = await userService.addCart(filterData)
-            if(!success.message){
-                this.message = "Thành công"
+                const success = await userService.addCart(filterData)
+                if(!success.message){
+                    this.message = "Thành công"
+                }
+                else this.message = "Thất bại"
             }
-            else this.message = "Thất bại"
         },
         hideNotify() {
             this.message = ''
