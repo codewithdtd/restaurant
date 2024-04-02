@@ -5,22 +5,8 @@
                 <p>{{ message }}</p>
             </div>
         </div>
-        <div class="menu__category col-lg-2 col-md-3">
-            <h4>Danh mục
-                <span class="" @click="showCategory">
-                    <i class="fa-solid fa-caret-down"></i>
-                </span>       
-            </h4>  
-            <ul class="menu__category_list" :class="{'menu__category_list--active': show_category == true}">
-                <li class="menu__category__list__item" :class="{ 'menu__category__list__item--active': id_category === '' }" @click="findCategory('')">
-                    Tất cả
-                </li> 
-                <li class="menu__category__list__item" :class="{ 'menu__category__list__item--active': id_category === item._id }" v-for="item in category" :key="item._id" @click="findCategory(item._id)">
-                    {{ item.name }}
-                </li>  
-            </ul>
-        </div>
         <div class="menu__product col-lg-10 col-md-9 col-12">
+            <Filter @sort="sort" @filter="filter" @range="range" />
             <h1 class="menu__title">Thực Đơn</h1>
             <div class="menu__product__list" v-if="menu.length>0">
                 <div class="menu__product__item col-lg-2 col-3" v-for="item in menu">
@@ -48,27 +34,22 @@
 import menuService from "@/services/menu.service";
 import userService from "@/services/user.service";
 import { useUserStore } from "@/stores/userStore";
-
+import Filter from "@/components/Filter.vue";
 export default {
+    components: {
+        Filter,
+    },
     async mounted() {
-        this.category = await menuService.getAllCategory();
         this.menu = this.id_category? await menuService.getByCategory(id_category): await menuService.getAll();
     },
     data() {
         return {
             menu: [],
-            category: [],
             id_category: '',
             message: '',
-            show_category: true,
         }
     },
     methods: {
-        async findCategory(id) {  
-            // return this.menu.filter(items => items.category == id) 
-            this.id_category = id; 
-            this.menu = id ? await menuService.getByCategory(id) : await menuService.getAll();
-        },
         async addToCart(data) {
             if (!useUserStore().login) {
               // Hiển thị thông báo yêu cầu đăng nhập
@@ -91,10 +72,22 @@ export default {
         hideNotify() {
             this.message = ''
         },
-        showCategory() {
-            console.log('click')
-            this.show_category = !this.show_category;
-        }
+        async sort(data) {
+            console.log(this.beforeSort)
+            if (data == 'asc') 
+                this.menu = this.menu.sort((a, b) => a.price - b.price)
+            else if (data == 'desc')
+                this.menu = this.menu.sort((a, b) => b.price - a.price)
+            else 
+                this.menu = await menuService.getAll();
+        },   
+        async filter(data) {
+            this.menu = data != '' ? await menuService.getByCategory(data): await menuService.getAll();    
+        },
+        async range(data) {
+            this.menu = await menuService.getAll();
+            this.menu = this.menu.filter(item => item.price <= data)
+        }  
     }
 }   
 </script>
@@ -109,6 +102,8 @@ export default {
     background: #000000d7;    
     margin-top: -10px;
     display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .menu__title {
@@ -118,38 +113,6 @@ export default {
     color: var(--color-main);
     /* font-size: 2.5rem; */
     margin: 10px;
-}
-
-.menu__category {
-    background: var(--color-background);
-    color: #fff;
-}
-
-.menu__category h4 {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.menu__category__list__item {
-    list-style: none;
-    margin: 20px 0;
-}
-
-.menu__category__list__item a {
-    /* background-color: #841b1b; */
-    width: 100%;
-    display: block;
-    color: #fff;
-    text-decoration: none;
-}
-
-.menu__category__list__item:hover {
-    color: var(--color-main);
-    cursor: pointer;
-}
-
-.menu__category__list__item--active {
-    color: var(--color-main);
 }
 
 .menu__product__list {
@@ -261,30 +224,6 @@ export default {
     font-size: 3rem;
 }
 
-.menu__category span {
-    display: none;
-}
 
-@media screen and (max-width: 750px) {
-    .menu {
-        flex-direction: column;
-    }
-    .menu__category_list{
-        display: none;
-    }
-    .menu__category_list--active{
-        display: block;
-    }
-    .menu__category {
-        background-color: #46464656;
-    }
-    .menu__category span {
-        display: inline;
-        cursor: pointer;
-    }
-    .header__function__search {
-        min-width: 100%;
-    }
-}
 
 </style>

@@ -11,7 +11,6 @@ export default {
 
 <template>
     <div id="app" class="container-fluid">
-
         <AppHeader />
         <div>
             <router-view />
