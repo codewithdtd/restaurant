@@ -4,10 +4,12 @@ import Home from "@/views/Home.vue";
 import Products from "@/views/Products.vue";
 import Orders from "@/views/Orders.vue";
 import Customers from "@/views/Customers.vue";
+import Categories from "@/views/Categories.vue";
+
 const routes = [
     {
         path: '/',
-        name: 'Home',
+        name: 'Tổng quan',
         component: Home,
     },
     {
@@ -16,18 +18,23 @@ const routes = [
         component: Login,
     },
     {
+        path: "/categories",
+        name: "Danh mục",
+        component: Categories,
+    },
+    {
         path: "/products",
-        name: "Products",
+        name: "Sản phẩm",
         component: Products,
     },
     {
         path: "/orders",
-        name: "Orders",
+        name: "Đơn hàng",
         component: Orders,
     },
     {
         path: "/customers",
-        name: "Customers",
+        name: "Khách hàng",
         component: Customers,
     },
     

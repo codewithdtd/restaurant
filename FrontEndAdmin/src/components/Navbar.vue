@@ -2,11 +2,11 @@
     <div class="navigation">
         <h1 class="navigation__title">TDa Chef</h1>
         <ul class="navigation__link">
-            <li class="navigation__link__items navigation__link__items--active">
+            <li class="navigation__link__items">
                 <router-link class="navigation__link__items__route" to="/"><i class="ri-dashboard-line"></i> <span>Tổng quan</span></router-link>
             </li>
-            <li class="navigation__link__items navigation__link__items--active">
-                <router-link class="navigation__link__items__route" to="/"><i class="ri-list-check"></i> <span>Danh mục</span></router-link>
+            <li class="navigation__link__items">
+                <router-link class="navigation__link__items__route" to="/categories"><i class="ri-list-check"></i> <span>Danh mục</span></router-link>
             </li>
             <li class="navigation__link__items"><router-link to="/products" class="navigation__link__items__route"><i class="ri-restaurant-line"></i> <span>Sản phẩm</span></router-link></li>
             <li class="navigation__link__items">
@@ -77,7 +77,7 @@ export default {
     margin-left: 0;
     font-size: 1rem;
     padding: 5px;
-    font-weight: 500;
+    font-weight: 400;
     border-radius: 15px;
     border: solid 3px #00000000;
     width: 100%;
