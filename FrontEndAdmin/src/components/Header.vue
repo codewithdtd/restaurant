@@ -1,12 +1,9 @@
 <template>
     <div class="header">
         <div class="header__left"> JDa / {{ this.$route.name }}
-            <p>Danh mục</p>
+            <p>{{ this.$route.name }}</p>
         </div>
         <div class="header__right">
-            <div class="header__item header__search">
-                <input type="text" placeholder="Tìm kiếm">
-            </div>
             <div class="header__item header__notify">
                 <i class="ri-notification-3-line"></i>
             </div>
@@ -55,11 +52,4 @@
     padding: 5px 9px;
 }
 
-.header__search input {
-    font-size: 0.9rem;
-    padding: 5px 7px;
-    border-radius: 7px;
-    border: none;
-    width: 10rem;
-}
 </style>
