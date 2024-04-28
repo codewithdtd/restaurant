@@ -14,7 +14,7 @@ class ProductService {
         return (await this.api.post(`/`, data)).data;
     }
     async updateProduct(data) {
-        return (await this.api.put(`/${data._id}`, data)).data;
+        return (await this.api.put(`/${data['id']}`, data)).data;
     }
     async deleteProduct(data) {
         return (await this.api.delete(`/${data._id}`)).data;

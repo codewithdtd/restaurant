@@ -50,6 +50,11 @@ export default {
     mounted() {
         this.getAllProduct()
     },
+    watch: {
+        list(newValue) {
+            this.getAllProduct();
+        },
+    },
     components: {
         Image
     },

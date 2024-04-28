@@ -1,6 +1,6 @@
 <template>
     <div class="image">
-        <img :src="src" alt="">
+        <img :src="`http://localhost:3000/static/`+src" alt="">
     </div>
 </template>
 <script>
@@ -22,4 +22,5 @@ export default {
     border-radius: 10px;
     object-fit: cover;
 }
+
 </style>
