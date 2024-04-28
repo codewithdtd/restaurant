@@ -6,11 +6,20 @@ const ApiError = require("../api-error")
 exports.create = async (req, res, next) => {
     try {
         const menuService = new MenuService(MongoDB.client);
-        const document = await menuService.create(req.body);
+        const { name, category, price, quanlity, description } = req.body;
+        const newProduct = {
+            name: name,
+            category: category,
+            price: price,
+            quanlity: quanlity,
+            description: description,
+            image: req.file.filename,
+        };
+        const document = await menuService.create(newProduct);
         return res.send(document);
     } catch (error) { 
         return next(
-            new ApiError(500, "Đã có lỗi xảy ra trong quá trình tạo tài khoản") 
+            new ApiError(500, "Đã có lỗi xảy ra trong quá trình tạo sản phẩm") 
         );
     }
 };
@@ -62,14 +71,15 @@ exports.update = async (req, res, next) => {
 
     try {
         const menuService = new MenuService(MongoDB.client);
-        const document = await menuService.update(req.params.id, req.body);
+        if(req.file != null) req.body.image = req.file.filename;
+        const document = await menuService.update(req.body._id, req.body);
         if (!document) {
             return next(new ApiError(404, "menu not found"));
         }
         return res.send({ message: "menu was updated successfully" });
     } catch (error) {
         return next(
-            new ApiError(500, `Error retrieving menu with id=${req.params.id}`)
+            new ApiError(500, `Error retrieving menu with id=${req.body._id}`)
         );
     }
 }

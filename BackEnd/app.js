@@ -21,7 +21,7 @@ app.use("/api/user", userRouter);
 //Xử lý menu 
 app.use("/api/menu", menuRouter);
 
-
+app.use("/static", express.static('app/uploads/'));
 // handle 404 response
 app.use((req, res, next) => {
     // Code ở đây sẽ chạy khi không có route được định nghĩa nào
