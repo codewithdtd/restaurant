@@ -17,11 +17,13 @@
             </li>
             <li class="navigation__link__items"><router-link to="/customers" class="navigation__link__items__route"><i class="ri-user-3-line"></i> <span>Khách hàng</span></router-link></li>
             <li class="navigation__link__items"><router-link to="/login" class="navigation__link__items__route"><i class="ri-feedback-line"></i> <span>Phản hồi</span></router-link></li>
-            <li class="navigation__link__items"><router-link to="/login" class="navigation__link__items__route"><i class="ri-logout-box-r-line"></i> <span>Đăng xuất</span></router-link></li>
+            <li class="navigation__link__items" @click="userStore.logout()"><a class="navigation__link__items__route"><i class="ri-logout-box-r-line"></i> <span>Đăng xuất</span></a></li>
         </ul>
     </div>
 </template>
 <script>
+import { useUserStore } from '@/stores/userStore';
+
 export default {
     methods: {
         handleNav() {
@@ -31,6 +33,7 @@ export default {
     data() {
         return {
             active: false,
+            userStore: useUserStore(),
         }
     }
 }

@@ -8,11 +8,24 @@
                 <i class="ri-notification-3-line"></i>
             </div>
             <div class="header__item header__user">
-                <i class="ri-user-line"></i> 
+                <i class="ri-user-line"></i>
             </div>
+            <span>
+                {{ userStore.user.name}}
+            </span>
         </div>
     </div>
 </template>
+<script>
+import { useUserStore } from '@/stores/userStore';
+export default {
+    data(){
+        return {
+            userStore: useUserStore(),
+        }
+    }
+}
+</script>
 <style>
 .header {
     display: flex;
@@ -42,7 +55,7 @@
 }
 
 .header__item {
-    margin-right: 10px;
+    margin-right: 4px;
     padding: 5px;
 }
 
@@ -50,6 +63,12 @@
     background-color: rgb(196, 255, 199);
     border-radius: 50%;
     padding: 5px 9px;
+}
+
+.header__right span {
+    font-size: 1rem;
+    margin-right: 5px;
+
 }
 
 </style>

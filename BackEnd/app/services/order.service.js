@@ -59,6 +59,10 @@ class OrderService {
         const result = await this.Order.find(filter);
         return result.toArray();
     }
+    async findAll() {
+        const result = await this.Order.find({});
+        return result.toArray();
+    }
 
     async findAllOrderUser(id) {
         const filter = {

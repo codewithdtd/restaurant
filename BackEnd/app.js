@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser")
 const userRouter = require("./app/routes/user.route");
+const adminRouter = require("./app/routes/admin.route");
 const menuRouter = require("./app/routes/menu.route");
 const ApiError = require("./app/api-error");
 
@@ -17,6 +18,8 @@ app.get("/", (req, res) => {
 
 // Xử lý user
 app.use("/api/user", userRouter);
+// Xử lý admin
+app.use("/api/admin", adminRouter);
 
 //Xử lý menu 
 app.use("/api/menu", menuRouter);

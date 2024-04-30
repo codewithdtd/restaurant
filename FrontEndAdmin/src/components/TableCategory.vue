@@ -1,5 +1,5 @@
 <template>
-    <div class="table">
+    <div class="tables">
         <div class="table__name">{{ nameTable }}</div>
         <div class="table__title row" >
             <div class="table__title__item col-sm-1">STT</div>
@@ -66,7 +66,7 @@ export default {
 
 </script>
 <style>
-.table {
+.tables {
     /* background-color: #fff; */
     flex-grow: 1;
     background-color: #2e2e2e;

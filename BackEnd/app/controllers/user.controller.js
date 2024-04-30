@@ -399,3 +399,17 @@ exports.findAllOrderUser = async (req, res, next) => {
         ))
     }
 }
+
+exports.findAllOrder = async (req, res, next) => {
+    try {
+        const orderService = new OrderService(MongoDB.client);
+
+        const AllOrder = await orderService.findAll();
+        return res.json(AllOrder)
+    } catch (error) {
+        console.log(error)
+        return next( new ApiError(
+            500, "Đã có lỗi xảy ra!"
+        ))
+    }
+}
