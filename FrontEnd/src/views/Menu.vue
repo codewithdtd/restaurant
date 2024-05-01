@@ -11,12 +11,12 @@
             <div class="menu__product__list" v-if="menu.length>0">
                 <div class="menu__product__item col-lg-2 col-3" v-for="item in menu">
                     <router-link :to="{ path: '/menu/' + item._id}" class="menu__product__item__image">
-                        <img :src=item.image alt="" class="">
+                        <img :src="'http://localhost:3000/static/'+item.image" alt="" class="">
                     </router-link>
                     
                     <div class="menu__product__item__information">
                         <p class="menu__product__item__name">{{ item.name }}</p>
-                        <p class="menu__product__item__price">{{ item.price.toLocaleString() }}</p>
+                        <p class="menu__product__item__price">{{ parseInt(item.price).toLocaleString() }}</p>
                     </div>
                     <div class="menu__product__item__button">
                         <button v-if="item.quanlity > 0" @click="addToCart(item)">Mua</button>
@@ -39,17 +39,49 @@ export default {
     components: {
         Filter,
     },
+    watch: {
+        '$route.query'(newValue) {
+            this.query = this.$route.query.search;
+            this.getData();
+        },
+    },
+    computed: {
+        productStrings() {
+            return this.menu.map((product) => {
+                const { name, price, description, category } = product;
+                return [name, price, description, category].join(" ").toUpperCase();
+            });
+        },
+        filteredProducts() {
+            if (this.query == '') return this.menu;
+            return this.menu.filter((_products, index) =>
+                    this.productStrings[index].includes(this.query.toUpperCase())
+            );
+        },
+    },
     async mounted() {
-        this.menu = this.id_category? await menuService.getByCategory(id_category): await menuService.getAll();
+        this.getData();
+        // this.menu = this.id_category? await menuService.getByCategory(id_category): await menuService.getAll();
+        // this.menu = this.menu.filter(item => item.deleted != 1)
     },
     data() {
         return {
             menu: [],
             id_category: '',
             message: '',
+            query: ''
         }
     },
     methods: {
+        async getData() {
+            this.menu = this.id_category? await menuService.getByCategory(id_category): await menuService.getAll();
+            this.menu = this.menu.filter(item => item.deleted != 1)
+        
+            if(this.query != '') {
+                this.menu = this.filteredProducts;
+            }
+
+        },
         async addToCart(data) {
             if (!useUserStore().login) {
               // Hiển thị thông báo yêu cầu đăng nhập
@@ -78,14 +110,17 @@ export default {
                 this.menu = this.menu.sort((a, b) => a.price - b.price)
             else if (data == 'desc')
                 this.menu = this.menu.sort((a, b) => b.price - a.price)
-            else 
+            else {
                 this.menu = await menuService.getAll();
+                this.menu = this.menu.filter(item => item.deleted != 1)
+            }
         },   
         async filter(data) {
             this.menu = data != '' ? await menuService.getByCategory(data): await menuService.getAll();    
         },
         async range(data) {
             this.menu = await menuService.getAll();
+            this.menu = this.menu.filter(item => item.deleted != 1)
             this.menu = this.menu.filter(item => item.price <= data)
         }  
     }
@@ -147,6 +182,7 @@ export default {
 .menu__product__item__image img{
     height: 100%;
     width: 100%;
+    object-fit: cover;
 }
 
 .menu__product__item__information {

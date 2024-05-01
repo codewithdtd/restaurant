@@ -5,7 +5,7 @@
         <div class="cart__body col-md-8" v-if="userStore.cart.length > 0">
             <div v-for="item in userStore.cart" :key="item._id" class="cart__body__item row col-sm-11">
                 <div class="cart__body__item__image col-sm-2">
-                    <img :src=item.product.image alt="">
+                    <img :src="'http://localhost:3000/static/'+item.product.image" alt="">
                 </div>
                 <div class="cart__body__item__name col-sm-3">
                     <p>{{ item.product.name }}</p>
@@ -54,8 +54,10 @@ export default {
         },
         async update(payload) {
             const updated = await userService.updateCart(payload)
-            if(!updated.message)
-                this.getCart()
+            if(!updated.message){
+                this.getCart();
+                this.message = ''
+            }
             else 
                 this.message = updated.message
         },
@@ -127,7 +129,8 @@ export default {
     /* margin-bottom: 10px; */
 }
 .cart .cart__body__item__image {
-    height: 90%;
+    height: 80%;
+    /* width: 100px; */
     overflow: hidden;
     margin: auto;
     display: flex;
@@ -135,16 +138,20 @@ export default {
 
 .cart .cart__body__item__image img {
     width: 100%;
+    min-height: 100%;
     align-self: center;
+    object-fit: cover;
 }
 
 .cart__body__item__quanlity {
     display: flex;
     align-items: center;
     justify-content: space-around;
+    flex-direction: column;
 }
 .cart__body__item__quanlity p {
     margin: 0;
+    color: rgb(255, 95, 95);
 }
 
 .cart__body__item__quanlity input {

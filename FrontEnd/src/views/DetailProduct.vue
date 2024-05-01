@@ -3,15 +3,17 @@
         <Notification :message="message" />
        <div v-if="item" class="col-sm-11 row">
         <div class="detail__image col-sm-6">
-            <img :src="item.image" alt="">
+            <img :src="'http://localhost:3000/static/'+item.image" alt="">
         </div>
         <div class="detail__info col-sm-6">
             <h3 class="detail__name">{{ item.name }}</h3>
             <p>{{ item.description }}</p>
             <p>Giá: {{ item.price.toLocaleString() }}</p>
             <p>Số lượng còn lại: {{ item.quanlity }}</p>
-            <input type="number" min="1" v-model="quanlity">
-            <button class="btn btn-warning" @click="addToCart(this.item)">Thêm vào giỏ hàng</button>
+            <input v-if="item.quanlity <= 0" disabled ="number" min="1" v-model="quanlity">
+            <input v-else type="number" min="1" v-model="quanlity">
+            <button v-if="item.quanlity <= 0" disabled class="btn btn-warning" @click="addToCart(this.item)">Hết hàng</button>
+            <button v-else class="btn btn-warning" @click="addToCart(this.item)">Thêm vào giỏ hàng</button>
         </div>
        </div>
        <p v-else>Không có sản phẩm</p>
@@ -77,7 +79,7 @@ export default {
 
 <style>
 .detail {
-    min-height: 100vh;
+    min-height: 70vh;
     height: fit-content;
     justify-content: center;
     display: flex;
@@ -90,8 +92,9 @@ export default {
 }
 
 .detail__image img {
-    max-width: 80%;
-    max-height: 70%;
+    width: 80%;
+    height: 50%;
+    object-fit: contain;
 }
 
 .detail__info input{

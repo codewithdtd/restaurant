@@ -26,7 +26,7 @@
                 </div>
                 <div class="product__form__item">
                     <p>Mô tả:</p>
-                    <textarea name="" id="" cols="30" rows="3">{{ description }}</textarea>
+                    <textarea v-model="description" name="" id="" cols="30" rows="3"></textarea>
                 </div>
                 <div class="product__form__item">
                     <p>Hình ảnh:</p>
@@ -117,7 +117,6 @@ export default {
                 data.append('quanlity', this.quanlity);
                 data.append('description', this.description);
                 this.imagePreview == null ? data.append('image', this.product.image) : data.append('image', this.image);
-                console.log(data)
                 if(await ProductService.updateProduct(data)) {
                     this.product = data;
                     this.product_form = !this.product_form;

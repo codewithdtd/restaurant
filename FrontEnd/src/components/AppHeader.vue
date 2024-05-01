@@ -49,8 +49,7 @@
                 <div v-else class="header__function__item header__function__info header__function__info--auth">
                     <p><i class="fa-regular fa-user"></i>{{ userStore.user.name }}</p>
                     <div class="header__function__info__nav">
-                        <p>Thông tin</p>
-                        <p>Đơn hàng</p>
+                        <router-link to="/order">Đơn hàng</router-link>
                         <button class="btn btn-outline-warning" @click="userStore.logout()"><i class="fa-solid fa-right-from-bracket"></i></button>
                     </div>
                 </div>

@@ -31,6 +31,8 @@
                     <input required type="radio" name="method" value="cod" v-model="method_payment"> COD
                     <input required type="radio" name="method" value="card" v-model="method_payment"> Card
             </div>
+            <p>Số tài khoản: 100200300400 - VietinBank - Nguyễn Văn P</p>
+            <p>Nội dung: SĐT-TDACHEF</p>
             <div class="payment__item">
                 <button>ĐẶT HÀNG</button>
             </div>
@@ -94,6 +96,7 @@ export default {
     background-color: rgba(100, 97, 90, 0.774);
     border: 2px solid #c8c8c8b9;
     height: fit-content;
+    border-radius: 7px;
 }
 
 .payment__title {
@@ -113,10 +116,12 @@ export default {
 .payment__item {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 .payment__item input {
     max-width: 100%;
+    border-radius: 5px;
 }
 
 .payment__item button{
