@@ -1,4 +1,7 @@
 <template>
+    <div class="product__header__action">
+        <button @click="handleAddProduct">+</button>
+    </div>
     <div class="tables">
         <div class="table__name">{{ nameTable }}</div>
         <div class="table__title row" >
@@ -12,10 +15,7 @@
             <div class="table__list__item col-sm-3">{{ item.name }}</div>
             <div class="table__list__item col-sm-3">{{ item.quantity }}</div>
             <div class="table__list__item table__list__item--edit col-sm-2">
-                <i class="ri-edit-line"></i>
-            </div>
-            <div class=" table__list__item table__list__item--delete col-sm-2">
-                <i class="ri-delete-bin-2-line"></i>
+                <i class="ri-edit-line"  @click="handleEmit(item)"></i>
             </div>
         </div>
     </div>
@@ -30,6 +30,7 @@ export default {
     mounted() {
         this.getAllCategory()
     },
+    emits: ['add', 'edit'],
     components: {
         Image
     },
@@ -53,7 +54,13 @@ export default {
         },
         productForcategory(name) {
             return this.product.filter(item => item.category == name);
-        }
+        },
+        handleEmit(product) {
+            this.$emit('edit', product);
+        },
+        handleAddProduct() {
+            this.$emit('add');
+        },
     },
     data() {
         return {

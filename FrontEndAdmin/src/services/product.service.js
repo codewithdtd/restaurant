@@ -19,5 +19,14 @@ class ProductService {
     async deleteProduct(data) {
         return (await this.api.delete(`/${data._id}`)).data;
     }
+    async addCategory(data) {
+        return (await this.api.post("/category",data)).data;
+    }
+    async updateCategory(data) {
+        return (await this.api.put("/category/"+data._id,data)).data;
+    }
+    async deleteCategory(data) {
+        return (await this.api.delete("/category/"+data._id,data)).data;
+    }
 }
 export default new ProductService();
