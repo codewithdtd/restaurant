@@ -33,6 +33,7 @@ exports.findAll = async (req, res, next) => {
             documents = await userService.findByQuery(queryParams);
         } else {
             documents = await userService.find({});
+            documents = documents.filter(item => item.role != 'admin')
         }
     } catch (error) {
         return next(

@@ -2,21 +2,19 @@
     <div class="tables">
         <div class="table__name">{{ nameTable }}</div>
         <div class="table__title row" >
-            <div class="table__title__item col-sm-1">STT</div>
-            <div class="table__title__item col-sm-2">TÊN</div>
-            <div class="table__title__item col-sm-2">SỐ LƯỢNG</div>
-            <div class="table__title__item col-sm-4">CÁC SẢN PHẨM</div>
-            <div class="table__title__item col-sm-2"></div>
+            <div class="table__title__item col-sm-2">STT</div>
+            <div class="table__title__item col-sm-3">TÊN</div>
+            <div class="table__title__item col-sm-3">SỐ LƯỢNG</div>
+            <div class="table__title__item col-sm-4"></div>
         </div>
         <div v-for="(item, index) in list" class="table__list row" :key="item.id">
-            <div class="table__list__item col-sm-1">{{ index + 1 }}</div>
-            <div class="table__list__item col-sm-2">{{ item.name }}</div>
-            <div class="table__list__item col-sm-2">{{ item.quantity }}</div>
-            <div class="table__list__item col-sm-4">{{ }}</div>
-            <div class="table__list__item table__list__item--edit col-sm-1">
+            <div class="table__list__item col-sm-2">{{ index + 1 }}</div>
+            <div class="table__list__item col-sm-3">{{ item.name }}</div>
+            <div class="table__list__item col-sm-3">{{ item.quantity }}</div>
+            <div class="table__list__item table__list__item--edit col-sm-2">
                 <i class="ri-edit-line"></i>
             </div>
-            <div class=" table__list__item table__list__item--delete col-sm-1">
+            <div class=" table__list__item table__list__item--delete col-sm-2">
                 <i class="ri-delete-bin-2-line"></i>
             </div>
         </div>
@@ -52,6 +50,9 @@ export default {
                 // Lưu số lượng vào đối tượng categoryQuantities
                 item.quantity = quantity;
             }
+        },
+        productForcategory(name) {
+            return this.product.filter(item => item.category == name);
         }
     },
     data() {
@@ -121,6 +122,13 @@ export default {
 
 .table__list__item--delete i {
     color: rgb(195, 44, 44);
+}
+
+.table__list__item--product {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: scroll;
 }
 
 </style>

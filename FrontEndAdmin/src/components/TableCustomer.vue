@@ -4,22 +4,11 @@
             <i class="ri-search-line"></i>
             <input type="text" placeholder="Tìm kiếm" v-model="search">
         </div>
-        <div class="product__header__action">
-            <div class="product__header__filter">
-                <i class="ri-filter-line"></i>
-                <select name="" id="" v-model="filter" @change="this.search = this.filter">
-                    <option disabled value="">Chọn danh mục</option>
-                    <option v-for="item in category" :key="item.id" :value="item.name">{{ item.name }}</option>
-                </select>
-            </div>
-            <button @click="handleAddProduct">+</button>
-        </div>
     </div>
     <div class="tables">
         <div class="table__name">{{ nameTable }}</div>
         <div class="table__title row" >
             <div class="table__title__item col-sm-1">STT</div>
-            <div class="table__title__item col-sm-2">HÌNH ẢNH</div>
             <div class="table__title__item col-sm-2">
                 TÊN
                 <div class="filter" @click="handleSort('name')">
@@ -27,30 +16,26 @@
                     <i v-else class="ri-arrow-down-fill"></i>
                 </div>
             </div>
-            <div class="table__title__item col-sm-2">GIÁ
-                <div class="filter" @click="handleSort('price')">
-                    <i v-if="sort_price" class="ri-arrow-up-fill"></i>
-                    <i v-else class="ri-arrow-down-fill"></i>
-                </div>
-            </div>
-            <div class="table__title__item col-sm-2">SỐ LƯỢNG
-                <div class="filter" @click="handleSort('quantity')">
-                    <i v-if="sort_quantity" class="ri-arrow-up-fill"></i>
+            <div class="table__title__item col-sm-2">EMAIL</div>
+            <div class="table__title__item col-sm-2">SỐ ĐIỆN THOẠI</div>
+            <div class="table__title__item col-sm-2">ĐỊA CHỈ
+                <div class="filter" @click="handleSort('address')">
+                    <i v-if="sort_address" class="ri-arrow-up-fill"></i>
                     <i v-else class="ri-arrow-down-fill"></i>
                 </div>
             </div>
             <div class="table__title__item col-sm-2">
                 <div class="filter">
-                    <i @click="getAllProduct" class="ri-refresh-line"></i>
+                    <i @click="getAllUser" class="ri-refresh-line"></i>
                 </div>
             </div>
         </div>
         <div v-for="(item, index) in filteredList" class="table__list row" :key="item.id">
             <div class="table__list__item col-sm-1">{{ index + 1 }}</div>
-            <div class="table__list__item col-sm-2"><Image :src="item.image" /></div>
-            <div class="table__list__item table__list__item--name col-sm-2 text-start">{{ item.name }} <br>Phân loại: {{ item.category }}</div>
-            <div class="table__list__item col-sm-2">{{ item.price }}</div>
-            <div class="table__list__item col-sm-2">{{ item.quanlity }}</div>
+            <div class="table__list__item col-sm-2">{{ item.name }}</div>
+            <div class="table__list__item col-sm-2">{{ item.email }}</div>
+            <div class="table__list__item col-sm-2">{{ item.phone }}</div>
+            <div class="table__list__item col-sm-2">{{ item.address}}</div>
             <div class="table__list__item table__list__item--edit col-sm-1">
                 <i class="ri-edit-line" @click="handleEmit(item)"></i>
             </div>
@@ -61,33 +46,73 @@
     </div>
 </template>
 <script>
-import Image from '@/components/Image.vue';
-import ProductService from '@/services/product.service.js'
+import userService from '@/services/user.service.js'
 export default {
     props: [
         "nameTable",
     ],
     mounted() {
-        this.getAllProduct()
+        this.getAllUser()
     },
     emits: ['add', 'edit'],
     computed: {
-        sortByPrice() {
-            if(this.sort_price)
-                return this.list.sort((a,b) => a.price - b.price)
-            else
-                return this.list.sort((a,b) => b.price - a.price)
+        sortByName() {
+            if(this.sort_name)
+                return this.list.sort((a, b) => {
+                    var nameA = a.address.toUpperCase(); // Chuyển đổi name thành chữ hoa để so sánh không phân biệt hoa thường
+                    var nameB = b.name.toUpperCase();
+                    if (nameA < nameB) {
+                        return -1;
+                    }
+                    if (nameA > nameB) {
+                        return 1;
+                    }
+                    return 0; // Trường hợp nameA === nameB
+                });
+            else 
+                return this.list.sort((a, b) => {
+                        var nameA = a.address.toUpperCase(); // Chuyển đổi name thành chữ hoa để so sánh không phân biệt hoa thường
+                        var nameB = b.name.toUpperCase();
+                        if (nameB < nameA) {
+                            return -1;
+                        }
+                        if (nameB > nameA) {
+                            return 1;
+                        }
+                        return 0; // Trường hợp nameA === nameB
+                    });
+    
         },
-        sortByQuantity() {
-            if(this.sort_quantity)
-                return this.list.sort((a,b) => a.quanlity - b.quanlity)
-            else
-                return this.list.sort((a,b) => b.quanlity - a.quanlity)
+        sortByaddress() {
+            if(this.sort_address)
+                return this.list.sort((a, b) => {
+                    var nameA = a.address.toUpperCase(); // Chuyển đổi name thành chữ hoa để so sánh không phân biệt hoa thường
+                    var nameB = b.address.toUpperCase();
+                    if (nameA < nameB) {
+                        return -1;
+                    }
+                    if (nameA > nameB) {
+                        return 1;
+                    }
+                    return 0; // Trường hợp nameA === nameB
+                });
+            else 
+                return this.list.sort((a, b) => {
+                        var nameA = a.address.toUpperCase(); // Chuyển đổi name thành chữ hoa để so sánh không phân biệt hoa thường
+                        var nameB = b.address.toUpperCase();
+                        if (nameB < nameA) {
+                            return -1;
+                        }
+                        if (nameB > nameA) {
+                            return 1;
+                        }
+                        return 0; // Trường hợp nameA === nameB
+                    });
         },
         listStrings() {
             return this.list.map((item) => {
-                const { name, price, description, category,  } = item;
-                return [name, price, description, category, ].join(" ").toLowerCase();
+                const { name, phone, address, email  } = item;
+                return [name, phone, address, email ].join(" ").toLowerCase();
             });
         },
             // Trả về các contact có chứa thông tin cần tìm kiếm.
@@ -109,40 +134,31 @@ export default {
         Image
     },
     methods: {
-        async getAllProduct() {
-            this.list = await ProductService.getAll();
+        async getAllUser() {
+            this.list = await userService.getAll();
             this.list = this.list.filter(item => item.deleted == 0);
-            this.category = await ProductService.getAllCategory();
         },
         handleSort(item) {
             if(item == 'name') {
                 this.sort_name = !this.sort_name;
                 this.sort_price = false;
-                this.sort_quantity = false;
+                this.sort_address = false;
+                this.sortByName;
             }
-            if(item == 'price') {
-                this.sort_price = !this.sort_price;
-                this.sort_name = false;
-                this.sort_quantity = false;
-                this.sortByPrice;
-            }
-            if(item == 'quantity') {
-                this.sort_quantity = !this.sort_quantity;
+            if(item == 'address') {
+                this.sort_address = !this.sort_address;
                 this.sort_price = false;
                 this.sort_name = false;
-                this.sortByQuantity;
+                this.sortByaddress;
             }
         },
         handleEmit(product) {
             this.$emit('edit', product);
         },
-        handleAddProduct() {
-            this.$emit('add');
-        },
         async handleDelete(product) {
             console.log(product)
-            if (await ProductService.deleteProduct(product)) 
-                this.getAllProduct();
+            if (await userService.deleteUser(product)) 
+                this.getAllUser();
         },
         handleFilter() {
 
@@ -154,7 +170,7 @@ export default {
             category: [],
             sort_name: false,
             sort_price: false,
-            sort_quantity: false,
+            sort_address: false,
             search: '',
             filter: ''
         }

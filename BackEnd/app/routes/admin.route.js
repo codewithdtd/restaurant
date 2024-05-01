@@ -35,7 +35,7 @@ router.route("/cart/:id")
 router.route("/order")
     .post(AuthToken.verifyTokenAdmin, user.addOrder)
     .put(AuthToken.verifyTokenAdmin, user.updateOrder)
-    .get(AuthToken.verifyTokenAdmin, user.findAll)
+    .get(AuthToken.verifyTokenAdmin, user.findAllOrder)
 
 router.route("/:id")
     .get(AuthToken.verifyTokenAdmin, user.findOne)
